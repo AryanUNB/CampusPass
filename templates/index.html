@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusPass | Student Bus Pass</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #102b52, #2466a3);
+        }
+
+        .card {
+            width: 420px;
+            max-width: 92%;
+            padding: 35px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 35px #0003;
+        }
+
+        h1 {
+            text-align: center;
+            color: #173f74;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #667085;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd3dc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1764ad;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #1764ad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #104d87;
+        }
+
+        .notice {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <h1>CampusPass</h1>
+        <p class="subtitle">Your Student Bus Pass Portal</p>
+
+        <form action="/claim" method="POST">
+
+            <label for="email">Account Email (Demo)</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="student@example.test"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Account Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your demo account password"
+                autocomplete="current-password"
+                required
+            >
+
+            <label for="university">Select University</label>
+            <select
+                id="university"
+                name="university"
+                required
+            >
+                <option value="">Choose your university</option>
+                <option value="UNB">
+                    University of New Brunswick
+                </option>
+                <option value="STU">
+                    St. Thomas University
+                </option>
+            </select>
+
+            <label for="student_number">Student Number</label>
+            <input
+                type="text"
+                id="student_number"
+                name="student_number"
+                placeholder="Enter student number"
+                required
+            >
+
+            <button type="submit">
+                Claim My Bus Pass
+            </button>
+
+        </form>
+
+        <p class="notice">
+            CampusPass Security Research Project<br>
+            CS 2413 - Information Security<br>
+            Educational simulation using fictional data only.
+        </p>
+    </main>
+</body>
+</html>
