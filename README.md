@@ -41,8 +41,8 @@ flowchart LR
 - **Flask application (`app.py`):** Checks student records, issues and verifies
   one-time codes, maintains the short-lived verified student session, and
   processes pass claims.
-- **SQLite database (`database.py`):** Stores student records and pass claims.
-  Verification challenges and request-limit records are also stored in the
-  application database.
+- **PostgreSQL database (`database.py`):** Stores student records, pass claims,
+  verification challenges, and request-limit records. Local development uses
+  SQLite when `DATABASE_URL` is not set.
 - **Email service:** Delivers verification codes to the email address
   registered for the matched student.
