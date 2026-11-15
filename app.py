@@ -12,18 +12,23 @@ from email.utils import formataddr, parseaddr
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 
-from database import get_connection, initialize_database
+from database import get_connection, initialize_database, insert_otp_request
 
-load_dotenv()
+if not os.environ.get("VERCEL"):
+    load_dotenv()
+
+configured_secret_key = os.environ.get("CAMPUSPASS_SECRET_KEY")
+if os.environ.get("VERCEL") and not configured_secret_key:
+    raise RuntimeError("CAMPUSPASS_SECRET_KEY must be configured on Vercel")
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("CAMPUSPASS_SECRET_KEY") or secrets.token_hex(32)
+app.secret_key = configured_secret_key or secrets.token_hex(32)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=10)
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = bool(os.environ.get("VERCEL"))
 
 initialize_database()
-
 OTP_LIFETIME_SECONDS = 300
 OTP_MAX_ATTEMPTS = 5
 MAX_FAILED_ATTEMPTS = 5
@@ -31,42 +36,6 @@ MAX_OTP_REQUESTS = 20
 LOCKOUT_SECONDS = 600
 UNB_CODE = "UNB"
 UNB_EMAIL_DOMAIN = "@unb.ca"
-
-with closing(get_connection()) as conn:
-    pass_columns = {
-        row["name"]
-        for row in conn.execute("PRAGMA table_info(passes)")
-    }
-    if "verified" not in pass_columns:
-        conn.execute("""
-            ALTER TABLE passes
-            ADD COLUMN verified INTEGER NOT NULL DEFAULT 0
-        """)
-    conn.executescript("""
-        CREATE TABLE IF NOT EXISTS failed_attempts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            client_ip TEXT NOT NULL,
-            attempted_at REAL NOT NULL
-        );
-
-        CREATE TABLE IF NOT EXISTS otp_requests (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            client_ip TEXT NOT NULL,
-            student_number TEXT NOT NULL,
-            requested_at REAL NOT NULL
-        );
-
-        CREATE TABLE IF NOT EXISTS otp_challenges (
-            challenge_id TEXT PRIMARY KEY,
-            student_number TEXT NOT NULL,
-            email TEXT NOT NULL,
-            university TEXT NOT NULL,
-            otp_hash TEXT NOT NULL,
-            expires_at REAL NOT NULL,
-            attempts INTEGER NOT NULL DEFAULT 0
-        );
-    """)
-    conn.commit()
 
 
 def csrf_token():
@@ -579,15 +548,9 @@ def request_otp():
                     current_time + OTP_LIFETIME_SECONDS
                 )
             )
-            request_cursor = conn.execute(
-                """
-                INSERT INTO otp_requests
-                (client_ip, student_number, requested_at)
-                VALUES (?, ?, ?)
-                """,
-                (client_ip, student_number, current_time)
+            otp_request_id = insert_otp_request(
+                conn, client_ip, student_number, current_time
             )
-            otp_request_id = request_cursor.lastrowid
 
     try:
         send_otp_email(student["student_email"], code)
