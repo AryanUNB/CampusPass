@@ -1,9 +1,9 @@
 
 import sqlite3
 from pathlib import Path
-from werkzeug.security import generate_password_hash
 
 DB_PATH = Path(__file__).with_name("campuspass.db")
+LEGACY_DEMO_STUDENT_NUMBERS = ("9000001", "9000002", "9000003", "8000001")
 
 
 def initialize_database():
@@ -23,47 +23,24 @@ def initialize_database():
             )
         """)
 
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS accounts (
-                email TEXT PRIMARY KEY,
-                password_hash TEXT NOT NULL,
-                student_number TEXT UNIQUE
-            )
-        """)
-
-        students = [
-            ("9000001", "UNB", "alice@example.test"),
-            ("9000002", "UNB", "bob@example.test"),
-            ("9000003", "UNB", "charlie@example.test"),
-            ("8000001", "STU", "david@example.test")
-        ]
-
-        conn.executemany(
-            "INSERT OR IGNORE INTO students VALUES (?, ?, ?)",
-            students
+        placeholders = ", ".join("?" for _ in LEGACY_DEMO_STUDENT_NUMBERS)
+        conn.execute(
+            f"DELETE FROM passes WHERE student_number IN ({placeholders})",
+            LEGACY_DEMO_STUDENT_NUMBERS
+        )
+        conn.execute(
+            f"DELETE FROM students WHERE student_number IN ({placeholders})",
+            LEGACY_DEMO_STUDENT_NUMBERS
         )
 
-        demo_accounts = [
-            ("alice@example.test", "AliceDemo2026!", "9000001"),
-            ("bob@example.test", "BobDemo2026!", "9000002"),
-            ("charlie@example.test", "CharlieDemo2026!", "9000003"),
-            ("david@example.test", "DavidDemo2026!", "8000001"),
-            ("attacker@example.test", "AttackerDemo2026!", None)
-        ]
-
-        for email, password, student_number in demo_accounts:
-            conn.execute(
-                """
-                INSERT OR IGNORE INTO accounts
-                (email, password_hash, student_number)
-                VALUES (?, ?, ?)
-                """,
-                (
-                    email,
-                    generate_password_hash(password),
-                    student_number
-                )
-            )
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO students
+                (student_number, university, student_email)
+            VALUES (?, ?, ?)
+            """,
+            ("3776295", "UNB", "hadi.akbar@unb.ca")
+        )
 
 
 def get_connection():

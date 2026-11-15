@@ -1,12 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusPass | Student Bus Pass</title>
+    <meta name="theme-color" content="#c8102e">
+    <title>CampusPass | University of New Brunswick</title>
 
     <style>
+        :root {
+            color-scheme: light;
+            --unb-red: #c8102e;
+            --unb-red-dark: #a20d25;
+            --ink: #17191c;
+            --muted: #656a70;
+            --line: #e7e5e2;
+            --paper: #f5f4f1;
+            --white: #fff;
+            --green: #23734b;
+        }
+
         * {
             box-sizing: border-box;
         }
@@ -14,143 +26,710 @@
         body {
             margin: 0;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #102b52, #2466a3);
+            color: var(--ink);
+            background: var(--paper);
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                sans-serif;
         }
 
-        .card {
-            width: 420px;
-            max-width: 92%;
-            padding: 35px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 12px 35px #0003;
+        .top-rule {
+            height: 5px;
+            background: var(--unb-red);
+        }
+
+        .site-header {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 max(6vw, calc((100vw - 1200px) / 2));
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            background: var(--unb-red);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 850;
+            letter-spacing: -1px;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 760;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: var(--unb-red);
+        }
+
+        .header-note {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .admin-login-link {
+            color: var(--unb-red);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .admin-login-link:hover {
+            color: var(--unb-red-dark);
+            text-decoration: underline;
+        }
+
+        .secure-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 4px #23734b1a;
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 48px));
+            min-height: calc(100vh - 87px);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(370px, 465px);
+            align-items: center;
+            gap: clamp(48px, 8vw, 112px);
+            margin: 0 auto;
+            padding: 68px 0 78px;
+        }
+
+        .intro {
+            max-width: 555px;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 20px;
+            color: var(--unb-red);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            width: 27px;
+            height: 2px;
+            background: currentColor;
+            content: "";
         }
 
         h1 {
-            text-align: center;
-            color: #173f74;
-            margin-bottom: 5px;
+            max-width: 100%;
+            margin: 0 0 56px;
+            font-size: clamp(32px, 5.1vw, 56px);
+            line-height: 1.03;
+            letter-spacing: -0.06em;
+            white-space: nowrap;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #667085;
-            margin-bottom: 28px;
+        .intro-copy {
+            max-width: 450px;
+            margin: 22px 0 35px;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .how-it-works {
+            display: grid;
+            gap: 19px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .how-it-works li {
+            display: grid;
+            grid-template-columns: 39px 1fr;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #e6c6cb;
+            border-radius: 50%;
+            color: var(--unb-red);
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .step-copy strong, .step-copy span {
+            display: block;
+        }
+
+        .step-copy strong {
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        .step-copy span {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .portal-card {
+            width: 100%;
+            padding: 36px;
+            border: 1px solid #e9e7e4;
+            border-radius: 15px;
+            background: var(--white);
+            box-shadow: 0 22px 60px #19191912;
+        }
+
+        .card-kicker {
+            margin: 0 0 9px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 26px;
+            line-height: 1.2;
+            letter-spacing: -0.035em;
+        }
+
+        .card-intro {
+            margin: 11px 0 22px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message {
+            margin: 0 0 19px;
+            padding: 12px 14px;
+            border: 1px solid #e6d9bb;
+            border-radius: 8px;
+            background: #fff9eb;
+            color: #70520c;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            border-color: #efc7c9;
+            background: #fff1f1;
+            color: #982631;
+        }
+
+        .message.success {
+            border-color: #c7e4d3;
+            background: #eff9f3;
+            color: #216641;
+        }
+
+        .field {
+            margin-top: 17px;
         }
 
         label {
             display: block;
-            margin: 16px 0 7px;
-            font-weight: bold;
-            font-size: 14px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        input, select {
+        input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccd3dc;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-
-        input:focus, select:focus {
+            min-height: 49px;
+            padding: 0 13px;
+            border: 1px solid #d8d8d8;
+            border-radius: 7px;
             outline: none;
-            border-color: #1764ad;
+            background: #fff;
+            color: var(--ink);
+            font: inherit;
+            font-size: 14px;
+            transition: border-color 140ms, box-shadow 140ms;
         }
 
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 14px;
-            background: #1764ad;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+        input::placeholder {
+            color: #9a9da1;
         }
 
-        button:hover {
-            background: #104d87;
+        input:focus {
+            border-color: var(--unb-red);
+            box-shadow: 0 0 0 3px #c8102e1a;
         }
 
-        .notice {
-            margin-top: 22px;
-            text-align: center;
+        .field-hint {
+            margin: 7px 0 0;
+            color: var(--muted);
             font-size: 12px;
-            color: #777;
+        }
+
+        .primary-button, .secondary-button {
+            width: 100%;
+            min-height: 49px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border-radius: 7px;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 750;
+            transition: background 140ms, border-color 140ms, transform 140ms;
+        }
+
+        .primary-button {
+            margin-top: 22px;
+            border: 1px solid var(--unb-red);
+            background: var(--unb-red);
+            color: var(--white);
+        }
+
+        .primary-button:hover {
+            border-color: var(--unb-red-dark);
+            background: var(--unb-red-dark);
+        }
+
+        .primary-button:active, .secondary-button:active {
+            transform: translateY(1px);
+        }
+
+        .secondary-button {
+            margin-top: 11px;
+            border: 1px solid var(--line);
+            background: var(--white);
+            color: var(--ink);
+        }
+
+        .secondary-button:hover {
+            border-color: #c9c6c2;
+            background: #faf9f7;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 23px 0;
+            color: #8b8d90;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .divider::before, .divider::after {
+            height: 1px;
+            flex: 1;
+            background: var(--line);
+            content: "";
+        }
+
+        .status-panel {
+            margin: 22px 0 18px;
+            padding: 18px;
+            border: 1px solid #cce4d5;
+            border-radius: 9px;
+            background: #f1f8f3;
+        }
+
+        .status-panel.claimed {
+            border-color: #e8d9b8;
+            background: #fff9ed;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .status-panel.claimed .status-label {
+            color: #805c0a;
+        }
+
+        .status-label svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .status-panel strong {
+            display: block;
+            font-size: 16px;
+            line-height: 1.35;
+        }
+
+        .status-panel p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.5;
+        }
+
+        .student-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 8px 11px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #faf9f7;
+            color: #484b4f;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .card-footnote {
+            margin: 21px 0 0;
+            color: #85888c;
+            font-size: 11px;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .site-footer {
+            padding: 16px 24px 23px;
+            color: #777a7e;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        @media (max-width: 860px) {
+            .page {
+                grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
+                gap: 40px;
+            }
+
+            .portal-card {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: clamp(32px, 5.1vw, 48px);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .site-header {
+                height: 72px;
+                padding: 0 22px;
+            }
+
+            .header-note {
+                font-size: 0;
+            }
+
+            .page {
+                width: min(100% - 36px, 470px);
+                min-height: auto;
+                grid-template-columns: 1fr;
+                gap: 34px;
+                padding: 49px 0 42px;
+            }
+
+            .intro {
+                max-width: none;
+            }
+
+            h1 {
+                max-width: 470px;
+                margin-bottom: 48px;
+                font-size: clamp(24px, 7.3vw, 42px);
+            }
+
+            .intro-copy {
+                margin: 16px 0 22px;
+                font-size: 15px;
+            }
+
+            .how-it-works {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 10px;
+            }
+
+            .how-it-works li {
+                grid-template-columns: 29px 1fr;
+                align-items: start;
+                gap: 7px;
+            }
+
+            .step-number {
+                width: 27px;
+                height: 27px;
+                font-size: 11px;
+            }
+
+            .step-copy strong {
+                font-size: 12px;
+            }
+
+            .step-copy span {
+                font-size: 11px;
+            }
+
+            .portal-card {
+                padding: 28px 24px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .brand-name {
+                font-size: 16px;
+            }
+
+            .how-it-works {
+                grid-template-columns: 1fr;
+            }
+
+            .how-it-works li {
+                grid-template-columns: 32px 1fr;
+                align-items: center;
+            }
         }
     </style>
 </head>
 
 <body>
-    <main class="card">
-        <h1>CampusPass</h1>
-        <p class="subtitle">Your Student Bus Pass Portal</p>
+    <div class="top-rule"></div>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="CampusPass home">
+            <span class="brand-mark" aria-hidden="true">UNB</span>
+            <span class="brand-name">Campus<span>Pass</span></span>
+        </a>
+        <div class="header-note">
+            <span class="secure-dot" aria-hidden="true"></span>
+            Secure student access
+        </div>
+        <a class="admin-login-link" href="{{ url_for('admin_login') }}">Admin Login</a>
+    </header>
 
-        <form action="/claim" method="POST">
+    <main class="page">
+        <section class="intro" aria-labelledby="page-title">
+            <p class="eyebrow">University of New Brunswick</p>
+            <h1 id="page-title">Claim Your Bus Pass</h1>
 
-            <label for="email">Account Email (Demo)</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="student@example.test"
-                autocomplete="username"
-                required
-            >
+            <ol class="how-it-works" aria-label="How CampusPass works">
+                <li>
+                    <span class="step-number">01</span>
+                    <span class="step-copy">
+                        <strong>Confirm your details</strong>
+                        <span>Use your UNB email and student ID.</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="step-number">02</span>
+                    <span class="step-copy">
+                        <strong>Verify your email</strong>
+                        <span>Enter the one-time code we send you.</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="step-number">03</span>
+                    <span class="step-copy">
+                        <strong>Check your pass</strong>
+                        <span>Claim it if it is not active yet.</span>
+                    </span>
+                </li>
+            </ol>
+        </section>
 
-            <label for="password">Account Password</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter your demo account password"
-                autocomplete="current-password"
-                required
-            >
+        <section class="portal-card" aria-labelledby="portal-title">
+            {% for category, text in flashes %}
+                <p class="message {{ category }}" role="status">{{ text }}</p>
+            {% endfor %}
 
-            <label for="university">Select University</label>
-            <select
-                id="university"
-                name="university"
-                required
-            >
-                <option value="">Choose your university</option>
-                <option value="UNB">
-                    University of New Brunswick
-                </option>
-                <option value="STU">
-                    St. Thomas University
-                </option>
-            </select>
+            {% if verified_student_number %}
+                <p class="card-kicker">UNB student portal</p>
+                {% if pass_active %}
+                    <h2 id="portal-title">Your pass is ready.</h2>
+                    <p class="card-intro">
+                        Your student email is verified and your bus pass is
+                        already active.
+                    </p>
+                    <div class="status-panel claimed" role="status">
+                        <span class="status-label">
+                            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M10 1.8 17 5v4.7c0 4.2-2.9 6.9-7 8.5-4.1-1.6-7-4.3-7-8.5V5l7-3.2Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="m6.8 10 2.1 2.1 4.4-4.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Pass status
+                        </span>
+                        <strong>Already claimed</strong>
+                        <p>This student account already has an active bus pass.</p>
+                    </div>
+                {% else %}
+                    <h2 id="portal-title">You’re verified.</h2>
+                    <p class="card-intro">
+                        Your UNB student email is confirmed. Your pass is
+                        available to claim.
+                    </p>
+                    <div class="status-panel" role="status">
+                        <span class="status-label">
+                            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="m6.5 10 2.3 2.3 4.8-4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Pass status
+                        </span>
+                        <strong>Ready to claim</strong>
+                        <p>No active pass is linked to this student account yet.</p>
+                    </div>
+                    <form action="/claim" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="primary-button" type="submit">
+                            Claim my bus pass
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </form>
+                {% endif %}
 
-            <label for="student_number">Student Number</label>
-            <input
-                type="text"
-                id="student_number"
-                name="student_number"
-                placeholder="Enter student number"
-                required
-            >
+                <span class="student-chip">
+                    UNB student ID&nbsp; {{ verified_student_number }}
+                </span>
+                <form action="/logout" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="secondary-button" type="submit">Sign out</button>
+                </form>
+            {% elif otp_pending %}
+                <p class="card-kicker">Step 2 of 2 · Email verification</p>
+                <h2 id="portal-title">Check your inbox.</h2>
+                <p class="card-intro">
+                    Enter the six-digit code sent to your UNB student email.
+                    The code expires in five minutes.
+                </p>
 
-            <button type="submit">
-                Claim My Bus Pass
-            </button>
+                {% if message %}
+                    <p class="message {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
 
-        </form>
+                <form action="/verify-otp" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="field">
+                        <label for="otp">Verification code</label>
+                        <input
+                            type="text"
+                            id="otp"
+                            name="otp"
+                            placeholder="000000"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            autocomplete="one-time-code"
+                            aria-describedby="otp-hint"
+                            required
+                            autofocus
+                        >
+                        <p class="field-hint" id="otp-hint">
+                            You have up to five attempts to enter the code.
+                        </p>
+                    </div>
+                    <button class="primary-button" type="submit">
+                        Verify and continue
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+                <div class="divider">Wrong student details?</div>
+                <form action="/start-over" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="secondary-button" type="submit">
+                        Start over
+                    </button>
+                </form>
+            {% else %}
+                <p class="card-kicker">Step 1 of 2 · Student verification</p>
+                <h2 id="portal-title">Sign in with your UNB details.</h2>
+                <p class="card-intro">
+                    We’ll send a one-time verification code to the UNB email
+                    address on your student record.
+                </p>
 
-        <p class="notice">
-            CampusPass Security Research Project<br>
-            CS 2413 - Information Security<br>
-            Educational simulation using fictional data only.
-        </p>
+                {% if message %}
+                    <p class="message {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+
+                <form action="/request-otp" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="field">
+                        <label for="email">UNB student email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="name@unb.ca"
+                            autocomplete="email"
+                            maxlength="254"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="student_number">Student ID</label>
+                        <input
+                            type="text"
+                            id="student_number"
+                            name="student_number"
+                            placeholder="Enter your 7-digit student ID"
+                            inputmode="numeric"
+                            pattern="[0-9]{7}"
+                            maxlength="7"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button class="primary-button" type="submit">
+                        Send verification code
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+            {% endif %}
+
+        </section>
     </main>
+
+    <footer class="site-footer">
+        CampusPass · University of New Brunswick · Student bus pass portal
+    </footer>
 </body>
 </html>
