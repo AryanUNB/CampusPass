@@ -1,5 +1,7 @@
 # CampusPass
 
+Working Prototype: https://campuspassunb.vercel.app/
+
 CampusPass is a University of New Brunswick (UNB) student bus-pass portal. It
 matches a student's UNB email and student ID to a registered student record,
 verifies access through an emailed one-time code, and shows whether a pass is
